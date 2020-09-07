@@ -1,38 +1,55 @@
 #1:
-makeCacheMatrix <- function(x = matrix()) {
+makeCacheMatrix <- function(x = matrix()) { ##defines the argument of the matrix.
 
-  inv <- NULL
-  set <- function(y) {
+  inv <- NULL  ##define inv as NULL, this will keep the val of inv matrix
+  set <- function(y) {  ##define the set function to assign a new value
     x <<- y
     inv <<- NULL
   }
-  get <- function() {x}
-  setinverse <- function(inverse) {inv <<- inverse}
-  getinverse <- function() {inv}
+  get <- function() {x}   ##define the get function  - returns the value of the array argument
+  setinverse <- function(inverse) {inv <<- inverse}   
+  getinverse <- function() {inv}     ##gets the value of inv where called.
   list(set = set, get = get,setinverse = setinverse,getinverse = getinverse)
 }
 
 #2:
-cacheSolve <- function(x, ...) {
+##'cacheSolve' is a function computes the inverse of the special "matrix"  returned by 'makeCacheMatrix'
+
+cacheSolve <- function(x, ...) {   
   ## Here,it Return a matrix that is the inverse of matrix "x"
   inv <- x$getinverse()
   if(!is.null(inv)) {
     message("Getting Cached Matrix Inverse")
     return(inv)
   }
-  matr<- x$get()
-  inv <- solve(matr,...)
-  x$setinverse(inv)
-  inv
+  matr<- x$get()    ##Obtain The Matrix.
+  inv <- solve(matr,...)   ##Calculate the Inverse.
+  x$setinverse(inv)   ## Establishes the Inverse.
+  inv  ## Returns The Inverse
 }
 #solveing:
-imatrix=makeCacheMatrix(matrix(1:4,nrow=2,ncol=2))
+imatrix=makeCacheMatrix(matrix(1:4,nrow=2,ncol=2))  # A SIMPLE  4*4 MATRIX IS CONSIDERED 
 imatrix$get()
+[,1] [,2]
+[1,]    1    3
+[2,]    2    4
 imatrix$getinverse()
 #gives null so not catched
+NULL
 cacheSolve(imatrix)
 #Again if we call catche function 
+[,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
 cacheSolve(imatrix)
 # Displays with message("Getting Cached Matrix Inverse")
+Getting Cached Matrix Inverse
+[,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
+
 imatrix$getinverse()
 #Now returns inverse of the matrix.
+[,1] [,2]
+[1,]   -2  1.5
+[2,]    1 -0.5
