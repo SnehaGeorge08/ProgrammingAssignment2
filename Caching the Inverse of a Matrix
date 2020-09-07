@@ -1,0 +1,38 @@
+#1:
+makeCacheMatrix <- function(x = matrix()) {
+
+  inv <- NULL
+  set <- function(y) {
+    x <<- y
+    inv <<- NULL
+  }
+  get <- function() {x}
+  setinverse <- function(inverse) {inv <<- inverse}
+  getinverse <- function() {inv}
+  list(set = set, get = get,setinverse = setinverse,getinverse = getinverse)
+}
+
+#2:
+cacheSolve <- function(x, ...) {
+  ## Here,it Return a matrix that is the inverse of matrix "x"
+  inv <- x$getinverse()
+  if(!is.null(inv)) {
+    message("Getting Cached Matrix Inverse")
+    return(inv)
+  }
+  matr<- x$get()
+  inv <- solve(matr,...)
+  x$setinverse(inv)
+  inv
+}
+#solveing:
+imatrix=makeCacheMatrix(matrix(1:4,nrow=2,ncol=2))
+imatrix$get()
+imatrix$getinverse()
+#gives null so not catched
+cacheSolve(imatrix)
+#Again if we call catche function 
+cacheSolve(imatrix)
+# Displays with message("Getting Cached Matrix Inverse")
+imatrix$getinverse()
+#Now returns inverse of the matrix.
